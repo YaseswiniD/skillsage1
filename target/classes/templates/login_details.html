@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Details</title>
+</head>
+<body>
+    <h1>Login Details</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Email</th>
+              
+                <th>Role</th>
+                <th>Full Name</th>
+                <th>Project</th>
+                <th>Project Description</th>
+                <th>Date From</th>
+                <th>Date To</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="loginDet : ${loginDetails}">
+                <tr>
+                    <td th:text="${loginDet.empid}"></td>
+                    <td th:text="${loginDet.email}"></td>
+                 
+                    <td th:text="${loginDet.role}"></td>
+                    <td th:text="${loginDet.fullname}"></td>
+                    <td th:text="${loginDet.project}"></td>
+                    <td th:text="${loginDet.pro_desc}"></td>
+                    <td th:text="${loginDet.dateFrom}"></td>
+                    <td th:text="${loginDet.dateTo}"></td>
+                    <td>
+                        <form action="/delete-login-detail" method="post">
+                            <input type="hidden" name="empid" th:value="${loginDet.empid}">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Employee Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #3498db;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="date"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Edit Employee Details</h2>
+    <form action="/update-employee-details" method="POST" onsubmit="return validateDates()">
+        <input type="hidden" name="empid" th:value="${user.empid}">
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email" th:value="${user.email}" readonly><br>
+        <label for="fullname">Full Name:</label><br>
+        <input type="text" id="fullname" name="fullname" th:value="${user.fullname}"><br>
+        <label for="designation">Designation:</label><br>
+        <input type="text" id="designation" name="designation" th:value="${user.designation}"><br>
+        <label for="project">Availability:</label><br>
+        <select id="project" name="project" onchange="toggleFields()">
+            <option value="available" th:selected="${user.project == 'available'}">Available</option>
+            <option value="training" th:selected="${user.project == 'training'}">On Training</option>
+            <option value="project" th:selected="${user.project == 'project'}">On Project</option>
+        </select><br>
+        <div id="projectFields" class="hidden">
+            <label for="pro_desc">Description:</label><br>
+            <input type="text" id="pro_desc" name="pro_desc" th:value="${user.pro_desc}"><br>
+            <label for="dateFrom">Start Date:</label><br>
+            <input type="date" id="dateFrom" name="dateFrom" th:value="${#dates.format(user.dateFrom, 'yyyy-MM-dd')}"><br>
+            <label for="dateTo" id="dateToLabel" class="hidden">End Date:</label><br>
+            <input type="date" id="dateTo" name="dateTo" th:value="${#dates.format(user.dateTo, 'yyyy-MM-dd')}" class="hidden"><br><br>
+        </div>
+        <input type="submit" value="Update">
+    </form>
+
+    <script>
+    // Function to toggle fields based on the initially selected availability
+    function toggleFieldsOnLoad() {
+        toggleFields(); // Call toggleFields to show/hide fields based on initial project value
+    }
+
+    // Function to toggle fields based on project value
+    function toggleFields() {
+        var projectSelect = document.getElementById("project");
+        var projectFields = document.getElementById("projectFields");
+        var dateToLabel = document.getElementById("dateToLabel");
+        var dateToField = document.getElementById("dateTo");
+        
+        if (projectSelect.value === "available") {
+            projectFields.classList.add("hidden");
+            // Set values of hidden fields to empty when availability is set to Available
+            document.getElementById("pro_desc").value = "";
+            document.getElementById("dateFrom").value = "";
+            document.getElementById("dateTo").value = "";
+        } else if (projectSelect.value === "training") {
+            projectFields.classList.remove("hidden");
+            dateToLabel.classList.add("hidden");
+            dateToField.classList.add("hidden");
+            document.getElementById("dateTo").value = "";
+        } else if (projectSelect.value === "project") {
+            projectFields.classList.remove("hidden");
+            dateToLabel.classList.remove("hidden");
+            dateToField.classList.remove("hidden");
+        }
+    }
+    function validateDates() {
+        var fromDate = document.getElementById("dateFrom").value;
+        var toDate = document.getElementById("dateTo").value;
+
+        if (fromDate && toDate) {
+            var from = new Date(fromDate);
+            var to = new Date(toDate);
+            var today = new Date();
+
+            if (from >= to) {
+                alert("End date must be after start date.");
+                return false;
+            }
+
+            if (to <= today) {
+                alert("End date must be after today's date.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Call toggleFieldsOnLoad function when the page finishes loading
+    window.onload = toggleFieldsOnLoad;
+</script>
+
+</body>
+</html>

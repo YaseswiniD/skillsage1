@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Skill Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Employee Skill Details</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+            
+
+                <th>Skill Name</th>
+                <th>Skill SubDomain</th>
+                <th>Skill Domain</th>
+                <th>Proficiency</th>
+                <th>Experience</th>
+                <th>Certification Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employeeSkill : ${employeeSkills}">
+                <td th:text="${employeeSkill.login_det.empid}"></td>
+              
+
+                <td th:text="${employeeSkill.skills.skillname}"></td>
+                <td th:text="${employeeSkill.skills.subdomain}"></td>
+                <td th:text="${employeeSkill.skills.domain}"></td>
+                <td th:text="${employeeSkill.proficiency}"></td>
+                <td th:text="${employeeSkill.exp}"></td>
+                <td th:text="${employeeSkill.cert_source}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

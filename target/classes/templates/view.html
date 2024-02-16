@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        h2 {
+            color: blue;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>User Data</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>UserName</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${data}">
+                <td th:text="${user.empid}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.username}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

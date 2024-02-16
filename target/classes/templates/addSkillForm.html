@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Skill Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            // Fetch initial skills data on page load
+            var skillsData = /*[[${skillsList}]]*/ [];
+
+            // Populate dropdowns
+            populateDropdown('domain', skillsData, 'domain');
+            updateSubdomainsDropdown(); // Update subdomain dropdown based on selected domain
+            updateSkillNamesDropdown(); // Update skillname dropdown based on selected subdomain and domain
+
+            // Event listener for domain change
+            $('#domain').change(function () {
+                updateSubdomainsDropdown();
+                updateSkillNamesDropdown();
+            });
+
+            // Event listener for subdomain change
+            $('#skillDomain').change(function () {
+                updateSkillNamesDropdown();
+            });
+
+            // Event listener for skill name change
+            $('#skillName').change(function () {
+                updateSkillId();
+            });
+
+            function populateDropdown(elementId, data, column) {
+                var dropdown = $('#' + elementId);
+                dropdown.empty();
+                dropdown.append($('<option>').val('').text('Select ' + column));
+                var uniqueValues = [...new Set(data.map(item => item[column]))];
+                $.each(uniqueValues, function (index, value) {
+                    dropdown.append($('<option>').val(value).text(value));
+                });
+            }
+
+            function updateSubdomainsDropdown() {
+                var selectedDomain = $('#domain').val();
+                var subdomainsData = skillsData.filter(function (skill) {
+                    return skill.domain === selectedDomain;
+                });
+                populateDropdown('skillDomain', subdomainsData, 'subdomain');
+            }
+
+            function updateSkillNamesDropdown() {
+                var selectedDomain = $('#domain').val();
+                var selectedSubdomain = $('#skillDomain').val();
+                var skillNamesData = skillsData.filter(function (skill) {
+                    return skill.domain === selectedDomain && skill.subdomain === selectedSubdomain;
+                });
+                populateDropdown('skillName', skillNamesData, 'skillname');
+            }
+
+            // Function to update the hidden skill ID field
+            function updateSkillId() {
+                var selectedDomain = $('#domain').val();
+                var selectedSubdomain = $('#skillDomain').val();
+                var selectedSkillName = $('#skillName').val();
+
+                // Make an AJAX request to the server to get the skill ID based on the selected values
+                // Update the hidden skill ID field
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/getSkillId',
+                    data: {
+                        domain: selectedDomain,
+                        subdomain: selectedSubdomain,
+                        skillName: selectedSkillName
+                    },
+                    success: function (response) {
+                        var skillId = response.skillId;
+                        // Update the hidden skill ID field and empId.skillid
+                        $('#skillId').val(skillId);
+                        $('[name="id.skillid"]').val(skillId);
+                    },
+                    error: function () {
+                        alert('Error fetching skill ID');
+                    }
+                });
+            }
+        });
+        /*]]>*/
+    </script>
+    <style>
+      .navbar {
+            background-color: #a2c1e4; /* Light blue color */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+ 
+        .navbar img {
+            width: 100px;
+            height: 50px;
+        }
+ 
+        .logout-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+ 
+.logout-link:hover {
+    text-decoration: underline;
+}
+ 
+ 
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(https://image.shutterstock.com/image-vector/abstract-gray-background-vector-illustration-260nw-547924498.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+ 
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+ 
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #a2c1e4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+ 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+ 
+        select,
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+ 
+        select {
+            appearance: none;
+        }
+ 
+        input[type="submit"] {
+            background-color: #0b4c85;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            align-self: center;
+        }
+ 
+       
+ 
+     /*   input[type="text"]:hover,
+input[type="number"]:hover,
+select:hover {
+    background-color: #8196bb;  Lighter shade color on hover
+}*/
+ 
+/* Hover effect for submit button */
+input[type="submit"]:hover {
+    background-color: #376b96; /* Adjusted color on hover */
+}
+ 
+ 
+        /* changes */
+       
+   
+ 
+    /* Label styles */
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555; /* Default color */
+    }
+ 
+    /* Input field styles */
+    input[type="text"],
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #333; /* Default color */
+    }
+ 
+    /* Select field styles */
+    select {
+        appearance: none;
+    }
+ 
+    /* Submit button styles */
+    input[type="submit"] {
+        background-color: #4f4f51;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+ 
+    input[type="submit"]:hover {
+        background-color: #4f4f51;
+    }
+ 
+    /* Change color for specific fields */
+    input[type="text"][name="experience"],
+    input[type="text"][name="certSource"],
+    input[type="text"][name="empId"] {
+        color: #ff4500; /* Orange color */
+    }
+ 
+    select[name="proficiency"] {
+        color: #008080; /* Teal color */
+    }
+ 
+    #sbutton {
+    display: block;
+    margin: 0 auto; /* This centers the button horizontally */
+    background-color: #08223d;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+ 
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <img src="https://thisisthbs-my.sharepoint.com/:i:/r/personal/yaseswini_depuru_thbs_com/Documents/Microsoft%20Teams%20Chat%20Files/logo.gif?csf=1&web=1&e=Oe68fq" alt="Torry Harris Logo" width="100" height="50"> <!-- Logo to the left -->
+    <!-- Add any additional navbar content here -->
+ 
+    <a th:href="@{/logout}" class="logout-link">Logout</a>
+ 
+</div>
+
+
+
+<h2>Add Skill</h2>
+
+<form th:object="${employeeSkill}" th:action="@{/addSkillss}" method="post">
+    <!-- Other form fields -->
+
+    <!-- Dropdown menu for Domain -->
+    <label for="domain">Domain:</label>
+    <select id="domain" name="domain" th:field="*{skills.domain}" required>
+        <!-- Options will be populated dynamically using JavaScript -->
+    </select>
+    <br>
+
+    <!-- Dropdown menu for Skill Domain -->
+    <label for="skillDomain">Skill Domain:</label>
+    <select id="skillDomain" name="skillDomain" th:field="*{skills.subdomain}" required>
+        <!-- Options will be populated dynamically using JavaScript -->
+    </select>
+    <br>
+
+    <!-- Dropdown menu for Skill Name -->
+    <label for="skillName">Skill Name:</label>
+    <select id="skillName" name="skillName" th:field="*{skills.skillname}" required>
+        <!-- Options will be populated dynamically using JavaScript -->
+    </select>
+    <br>
+
+    <!-- Hidden input for Skill ID -->
+    <input type="hidden" id="skillId" name="skillId" th:field="*{skills.skillid}" />
+    <input type="hidden" id="empIdSkillId" name="id.skillid" th:field="*{id.skillid}" />
+
+    <!-- Other fields... -->
+    
+   <!-- <label for="proficiency">Proficiency:</label>
+    <input type="text" id="proficiency" name="proficiency" th:field="*{proficiency}" required>
+    <br> -->
+    <label for="proficiency">Proficiency:</label>
+<select id="proficiency" name="proficiency" th:field="*{proficiency}" required>
+    <option value="" disabled selected>Select Proficiency</option>
+    <option value="Awareness">Awareness</option>
+    <option value="Novice">Novice</option>
+    <option value="Professional">Professional</option>
+    <option value="Expert">Expert</option>
+</select>
+<br>
+
+    <label for="experience">Experience:</label>
+    <input type="text" id="experience" name="experience" th:field="*{exp}" required>
+    <br>
+
+    <label for="certSource">Certification Source:</label>
+    <input type="text" id="certSource" name="certSource" th:field="*{cert_source}" required>
+    <br>
+
+    <!-- EmpID field, set as read-only to prevent modification -->
+    <label for="empId">Employee ID:</label>
+    <input type="text" id="empId" name="empId" th:field="*{id.empid}" readonly>
+    <br>
+
+    <input type="submit" value="Add Skill">
+</form>
+
+</body>
+</html>

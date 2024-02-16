@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Login Details</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Emp ID</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Fullname</th>
+                     <th>Project</th>
+                <th>Project Description</th>
+                <th>Date From</th>
+                <th>Date To</th>
+       
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="loginDet : ${loginDetails}">
+                    <td th:text="${loginDet.empid}"></td>
+                    <td th:text="${loginDet.email}"></td>
+                    <td th:text="${loginDet.role}"></td>
+                    <td th:text="${loginDet.fullname}"></td>
+                     <td th:text="${loginDet.project}"></td>
+                    <td th:text="${loginDet.pro_desc}"></td>
+                    <td th:text="${loginDet.dateFrom}"></td>
+                    <td th:text="${loginDet.dateTo}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
