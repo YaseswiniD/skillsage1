@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subdomains List</title>
+</head>
+<body>
+    <h2>Subdomains List</h2>
+    <ul>
+        <!-- Subdomains will be populated dynamically -->
+        <th:block th:each="subdomain : ${subdomains}">
+            <li th:text="${subdomain}"></li>
+        </th:block>
+    </ul>
+</body>
+</html>

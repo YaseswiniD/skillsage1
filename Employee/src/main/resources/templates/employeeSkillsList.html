@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Skills List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #3498db;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        form {
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Employee Skills List</h2>
+
+<table>
+    <tr>
+        <th>Emp ID</th>
+        <th>Emp Name</th>
+        <th>Skill Name</th>
+        <th>Proficiency</th>
+        <th>Experience</th>
+        <th>Cert Source</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="employeeSkill : ${employeeSkills}">
+        <td th:text="${employeeSkill.id.empid}"></td>
+        <td th:text="${employeeSkill.login_det.fullname}"></td>
+        <td th:text="${employeeSkill.skills.skillname}"></td>
+        <td th:text="${employeeSkill.proficiency}"></td>
+        <td th:text="${employeeSkill.exp}"></td>
+        <td th:text="${employeeSkill.cert_source}"></td>
+        <td>
+            <form action="/editEmployeeskill" method="post">
+                <input type="hidden" name="empid" th:value="${employeeSkill.id.empid}">
+                <input type="hidden" name="skillid" th:value="${employeeSkill.id.skillid}">
+                <button type="submit">Edit</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

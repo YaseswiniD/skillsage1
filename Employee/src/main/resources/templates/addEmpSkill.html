@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee Skill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<form th:action="@{/addEmpSkill}" method="post" th:object="${employeeSkill}">
+    <!-- Input fields for EmpID -->
+    <label>Employee ID:</label>
+    <input type="text" th:field="*{id.empid}" required>
+
+    <label>Skill ID:</label>
+    <input type="number" th:field="*{id.skillid}" required>
+  
+
+    <!-- Other fields in EmployeeSkill -->
+    <label>Proficiency:</label>
+    <input type="text" th:field="*{proficiency}" required>
+
+    <label>Experience:</label>
+    <input type="text" th:field="*{exp}" required>
+
+    <label>Certification Source:</label>
+    <input type="text" th:field="*{cert_source}" required>
+
+    <button type="submit">Add Skill</button>
+</form>
+
+</body>
+</html>

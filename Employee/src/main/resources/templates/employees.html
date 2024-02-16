@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}</style>
+</head>
+<body>
+    <h2>Employee Details</h2>
+
+    <!-- Search Form -->
+    <form th:action="@{/admin/searchEmployees}" method="get">
+        <label for="empid">Employee ID:</label>
+        <input type="text" id="empid" name="empid" th:value="${empid}" />
+
+        <label for="skillname">Skill Name:</label>
+        <input type="text" id="skillname" name="skillname" th:value="${skillname}" />
+
+        <label for="domain">Domain:</label>
+        <input type="text" id="domain" name="domain" th:value="${domain}" />
+
+        <label for="subdomain">Subdomain:</label>
+        <input type="text" id="subdomain" name="subdomain" th:value="${subdomain}" />
+
+        <label for="proficiency">Proficiency:</label>
+        <input type="text" id="proficiency" name="proficiency" th:value="${proficiency}" />
+
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Employee Table -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employee ID</th>
+                <th>Skill Name</th>
+                <th>Domain</th>
+                <th>Subdomain</th>
+                <th>Proficiency</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the employees and display each row -->
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.empid}"></td>
+                <td th:text="${employee.skillname}"></td>
+                <td th:text="${employee.domain}"></td>
+                <td th:text="${employee.subdomain}"></td>
+                <td th:text="${employee.proficiency}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Download Report Button -->
+    <form th:action="@{/admin/exportCSV}" method="get">
+        <button type="submit">Download Report</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" th:href="@{../css/styles.css}">
+    <style>
+       body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Background image */
+    background-image: 6yurl('images/login-background-image-ai-4.png');
+    background-size: cover; /* Set to cover */
+    background-position: center; 
+    background-attachment: fixed;
+    background-color: #4f4f51; 
+}
+
+
+        .container {
+            background-color: #e9edc9; /* Skin tone color */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            border-color: #45b6fe;
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 10px;
+            top: 15px;
+            color: #888;
+        }
+
+        .submit-btn {
+            background-color: #fefae0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #3a9ad9;
+        }
+
+        .register-link {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="message" th:if="${param.error}">
+            Invalid Username or Password
+        </div>
+        <div class="message" th:if="${param.logout}">
+            Logout Successfully
+        </div>
+
+        <h2>Admin and User Login</h2>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">EmployeeID</label>
+                <input type="text" id="username" name="username" placeholder="Enter your Username" required>
+                <!-- Assuming you want to include the icon -->
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+                <!-- Assuming you want to include the icon -->
+                <i class="fas fa-lock"></i>
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+
+        <!-- Registration Box -->
+        <p style="color:#000000;">New employee, please <a th:href="@{/registration}" class="register-link">register</a>.</p>
+        <p style="color:black;"> <a th:href="@{/forgot}" class="register-link">forgot password</a>.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!--  <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Skills Report</title>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to convert HTML table to CSV
+            function downloadCSV() {
+                var csvContent = [];
+                var headers = [];
+
+                // Get table headers
+                $('table th').each(function () {
+                    headers.push($(this).text());
+                });
+                csvContent.push(headers.join(','));
+
+                // Get table rows
+                $('table tbody tr').each(function () {
+                    var row = [];
+                    $(this).find('td').each(function () {
+                        row.push($(this).text());
+                    });
+                    csvContent.push(row.join(','));
+                });
+
+                // Create a Blob and download CSV file
+                var blob = new Blob([csvContent.join('\n')], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement("a");
+                var url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "skills_report.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Attach the downloadCSV function to the download button click event
+            $('#downloadButton').click(function () {
+                downloadCSV();
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Skills Report</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Skill Name</th>
+                <th>Subdomain</th>
+                <th>Domain</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="skill : ${skills}">
+                <td th:text="${skill.skillid}"></td>
+                <td th:text="${skill.skillname}"></td>
+                <td th:text="${skill.subdomain}"></td>
+                <td th:text="${skill.domain}"></td>
+               
+            </tr>
+            
+        </tbody>
+    </table>
+     <button id="downloadButton">Download CSV</button>
+            
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skills Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+  
+
+</head>
+<body>
+    <h2>Skills Report</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Skill Name</th>
+                <th>Subdomain</th>
+                <th>Domain</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your skill data rows here -->
+             <tr th:each="skill : ${skills}">
+                <td th:text="${skill.skillid}"></td>
+                <td th:text="${skill.skillname}"></td>
+                <td th:text="${skill.subdomain}"></td>
+                <td th:text="${skill.domain}"></td>
+               
+            </tr>
+        </tbody>
+    </table>
+
+ 
+</body>
+</html>
+

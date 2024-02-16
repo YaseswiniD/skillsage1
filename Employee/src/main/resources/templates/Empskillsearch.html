@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Skill Details</title>
+      <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+    <script>
+        function filterTable() {
+            var empid = document.getElementById("empidInput").value.toUpperCase();
+            var skillid = document.getElementById("skillidInput").value.toUpperCase();
+            var proficiency = document.getElementById("proficiencyInput").value.toUpperCase();
+            var exp = document.getElementById("expInput").value.toUpperCase();
+            var certSource = document.getElementById("certSourceInput").value.toUpperCase();
+            var fullName = document.getElementById("fullNameInput").value.toUpperCase();
+            var skillName = document.getElementById("skillNameInput").value.toUpperCase();
+            var domain = document.getElementById("domainInput").value.toUpperCase();
+            var subdomain = document.getElementById("subdomainInput").value.toUpperCase();
+
+            var table = document.getElementById("employeeSkillTable");
+            var tr = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < tr.length; i++) { // Start from index 1 to skip header row
+                var tds = tr[i].getElementsByTagName("td");
+                var found = true;
+
+                if (empid && tds[0]) {
+                    if (tds[0].innerText.toUpperCase().indexOf(empid) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (skillid && tds[1]) {
+                    if (tds[1].innerText.toUpperCase().indexOf(skillid) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (proficiency && tds[2]) {
+                    if (tds[2].innerText.toUpperCase().indexOf(proficiency) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (exp && tds[3]) {
+                    if (tds[3].innerText.toUpperCase().indexOf(exp) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (certSource && tds[4]) {
+                    if (tds[4].innerText.toUpperCase().indexOf(certSource) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (fullName && tds[5]) {
+                    if (tds[5].innerText.toUpperCase().indexOf(fullName) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (skillName && tds[6]) {
+                    if (tds[6].innerText.toUpperCase().indexOf(skillName) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (domain && tds[7]) {
+                    if (tds[7].innerText.toUpperCase().indexOf(domain) === -1) {
+                        found = false;
+                    }
+                }
+
+                if (subdomain && tds[8]) {
+                    if (tds[8].innerText.toUpperCase().indexOf(subdomain) === -1) {
+                        found = false;
+                    }
+                }
+
+                tr[i].style.display = found ? "" : "none";
+            }
+        }
+    </script>
+    <!-- Add your existing style and other head content here -->
+</head>
+<body>
+
+<h2>Employee Skill Details</h2>
+
+<form th:action="@{/searchEmployeeSkills}" method="get">
+    <label>Search by Employee ID:</label>
+    <input type="text" name="empid" id="empidInput"/>
+
+    <label>Search by Skill ID:</label>
+    <input type="text" name="skillid" id="skillidInput"/>
+
+    <label>Search by Proficiency:</label>
+    <input type="text" name="proficiency" id="proficiencyInput"/>
+
+    <label>Search by Experience:</label>
+    <input type="text" name="exp" id="expInput"/>
+
+    <label>Search by Certification Source:</label>
+    <input type="text" name="certSource" id="certSourceInput"/>
+
+    <label>Search by Full Name:</label>
+    <input type="text" name="fullName" id="fullNameInput"/>
+
+    <label>Search by Skill Name:</label>
+    <input type="text" name="skillName" id="skillNameInput"/>
+
+    <label>Search by Domain:</label>
+    <input type="text" name="domain" id="domainInput"/>
+
+    <label>Search by Subdomain:</label>
+    <input type="text" name="subdomain" id="subdomainInput"/>
+
+    <button type="button" onclick="filterTable()">Search</button>
+</form>
+
+<table border="1" id="employeeSkillTable">
+    <thead>
+    <tr>
+        <th>Employee ID</th>
+        <th>Skill ID</th>
+        <th>Proficiency</th>
+        <th>Experience</th>
+        <th>Certification Source</th>
+        <th>Employee Full Name</th>
+        <th>Skill Name</th>
+        <th>Domain</th>
+        <th>Subdomain</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employeeSkill : ${employeeSkills}">
+        <td th:text="${employeeSkill.id.empid}"></td>
+        <td th:text="${employeeSkill.id.skillid}"></td>
+        <td th:text="${employeeSkill.proficiency}"></td>
+        <td th:text="${employeeSkill.exp}"></td>
+        <td th:text="${employeeSkill.cert_source}"></td>
+        <td th:text="${employeeSkill.login_det.fullname}"></td>
+        <td th:text="${employeeSkill.skills.skillname}"></td>
+        <td th:text="${employeeSkill.skills.domain}"></td>
+        <td th:text="${employeeSkill.skills.subdomain}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

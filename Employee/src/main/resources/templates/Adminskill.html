@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Skill</title>
+     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive layout for smaller screens */
+        @media screen and (max-width: 600px) {
+            form {
+                width: 80%;
+            }
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .new-input {
+            margin-top: 8px;
+            display: none; /* Initially hide the new input container */
+        }
+    </style>
+</head>
+<body>
+   
+    <form th:action="@{/addSkill}" method="post" onsubmit="return handleFormSubmit()">
+        <label for="domain">Domain:</label>
+        <select id="domain" name="domain" required onchange="updateSubdomains()">
+            <option value="other">Add New Domain</option>
+            <option th:each="domain : ${allDomains}" th:value="${domain}" th:text="${domain}"></option>
+        </select>
+        <div id="newDomainInput" style="display: none;">
+            <label for="newDomain">New Domain:</label>
+            <input type="text" id="newDomain" name="newDomain">
+        </div>
+       
+        <label for="subdomain">Sub Domain:</label>
+        <select id="subdomain" name="subdomain" required onchange="updateSubdomainInput()">
+            <option value="other">Add New Subdomain</option>
+            <!-- Options for subdomains will be dynamically updated using JavaScript -->
+        </select>
+        <div id="newSubdomainInput" style="display: none;">
+            <label for="newSubdomain">New Subdomain:</label>
+            <input type="text" id="newSubdomain" name="newSubdomain">
+        </div>
+        <br>
+        
+         <br>
+        <label for="skillname">Skill Name:</label>
+        <input type="text" id="skillname" name="skillname" required>
+        <br>
+        
+        
+        <button type="submit">Add Skill</button>
+    </form>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var allSubdomainsByDomain = /*[[${allSubdomainsByDomain}]]*/ {}; // Map of domains to subdomains
+
+        function updateSubdomains() {
+            var domainSelect = document.getElementById('domain');
+            var subdomainSelect = document.getElementById('subdomain');
+            var newDomainInput = document.getElementById('newDomainInput');
+            var newSubdomainInput = document.getElementById('newSubdomainInput');
+            var selectedDomain = domainSelect.value;
+
+            // Show/hide new domain input based on selection
+            newDomainInput.style.display = (selectedDomain === 'other') ? 'block' : 'none';
+
+            // Clear existing options
+            subdomainSelect.innerHTML = "<option value='other'>Add New Subdomain</option>";
+
+            // Use a Set to keep track of unique subdomains
+            var uniqueSubdomains = new Set();
+
+            // Populate subdomains based on the selected domain
+            if (selectedDomain in allSubdomainsByDomain) {
+                allSubdomainsByDomain[selectedDomain].forEach(function (subdomain) {
+                    uniqueSubdomains.add(subdomain);
+                });
+            }
+
+            // Convert the Set to an array and sort it
+            var sortedSubdomains = Array.from(uniqueSubdomains).sort();
+
+            // Populate the dropdown with unique and sorted subdomains
+            sortedSubdomains.forEach(function (subdomain) {
+                var option = document.createElement('option');
+                option.value = subdomain;
+                option.text = subdomain;
+                subdomainSelect.add(option);
+            });
+
+            // Show/hide new subdomain input based on selection
+            newSubdomainInput.style.display = (subdomainSelect.value === 'other') ? 'block' : 'none';
+        }
+
+        function updateSubdomainInput() {
+            var subdomainSelect = document.getElementById('subdomain');
+            var newSubdomainInput = document.getElementById('newSubdomainInput');
+
+            // Show/hide new subdomain input based on selection
+            newSubdomainInput.style.display = (subdomainSelect.value === 'other') ? 'block' : 'none';
+        }
+
+        function handleFormSubmit() {
+            var domainSelect = document.getElementById('domain');
+            var subdomainSelect = document.getElementById('subdomain');
+            var newDomainInput = document.getElementById('newDomain');
+            var newSubdomainInput = document.getElementById('newSubdomain');
+
+            // If "Other" is selected for domain, update the name attribute
+            if (domainSelect.value === 'other') {
+                newDomainInput.setAttribute('name', 'domain');
+                domainSelect.removeAttribute('name');
+            }
+
+            // If "Other" is selected for subdomain, update the name attribute
+            if (subdomainSelect.value === 'other') {
+                newSubdomainInput.setAttribute('name', 'subdomain');
+                subdomainSelect.removeAttribute('name');
+            }
+
+            return true; // Allow the form to be submitted
+        }
+
+        // Initial population of subdomains based on the default selected domain
+        updateSubdomains();
+        /*]]>*/
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Skills Table</h2>
+    <div>
+        <label for="searchSkillName">Search by Skill Name:</label>
+        <input type="text" id="searchSkillName" oninput="filterSkills()">
+    </div>
+    <div>
+        <label for="searchDomain">Search by Domain:</label>
+        <input type="text" id="searchDomain" oninput="filterSkills()">
+    </div>
+    <div>
+        <label for="searchSubdomain">Search by Subdomain:</label>
+        <input type="text" id="searchSubdomain" oninput="filterSkills()">
+    </div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAllCheckbox">Select All</th> <!-- Select All checkbox -->
+                <th>Skill ID</th>
+                <th>Skill Name</th>
+                <th>Subdomain</th>
+                <th>Domain</th>
+            </tr>
+        </thead>
+        <tbody id="skillsTableBody">
+            <!-- Populate table rows dynamically -->
+            <!-- Use Thymeleaf to iterate over skills -->
+            <tr th:each="skill : ${skills}">
+                <td><input type="checkbox" class="checkbox" th:value="${skill.skillid}" name="selectedSkills"></td>
+                <td th:text="${skill.skillid}"></td>
+                <td th:text="${skill.skillname}"></td>
+                <td th:text="${skill.subdomain}"></td>
+                <td th:text="${skill.domain}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="deleteSelected()">Delete Selected</button>
+
+    <script>
+        // Function to handle the "Select All" checkbox
+        document.getElementById("selectAllCheckbox").addEventListener("click", function () {
+            var checkboxes = document.querySelectorAll('.checkbox');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = document.getElementById("selectAllCheckbox").checked;
+            });
+        });
+
+        function deleteSelected() {
+            var selectedSkills = document.querySelectorAll('input[name="selectedSkills"]:checked');
+            var skillIds = [];
+            selectedSkills.forEach(function(skill) {
+                skillIds.push(skill.value);
+            });
+            // Send selected skill IDs to backend for deletion
+            fetch('/delete-skills', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(skillIds)
+            }).then(function(response) {
+                if (response.ok) {
+                    // Reload the page after successful deletion
+                    window.location.reload();
+                }
+            });
+        }
+
+        function filterSkills() {
+            var inputSkillName = document.getElementById("searchSkillName").value.toUpperCase();
+            var inputDomain = document.getElementById("searchDomain").value.toUpperCase();
+            var inputSubdomain = document.getElementById("searchSubdomain").value.toUpperCase();
+            var rows = document.getElementById("skillsTableBody").getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var skillName = rows[i].getElementsByTagName("td")[2];
+                var domain = rows[i].getElementsByTagName("td")[4];
+                var subdomain = rows[i].getElementsByTagName("td")[3];
+                if (skillName && domain && subdomain) {
+                    var skillNameValue = skillName.textContent.toUpperCase();
+                    var domainValue = domain.textContent.toUpperCase();
+                    var subdomainValue = subdomain.textContent.toUpperCase();
+                    if (skillNameValue.indexOf(inputSkillName) > -1 &&
+                        domainValue.indexOf(inputDomain) > -1 &&
+                        subdomainValue.indexOf(inputSubdomain) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

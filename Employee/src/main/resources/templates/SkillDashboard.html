@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Skills Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 200px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="btn-container">
+        <!-- Button for viewing skills -->
+        <a href="/Skills" class="btn btn-info">View Skills</a>
+        
+        <!-- Button for adding new skills -->
+        <a href="/addSkill" class="btn btn-success">Add New Skills</a>
+        
+        <!-- Button for searching skills -->
+        <a href="/searchSkills" class="btn btn-primary">Search Skills</a>
+        
+         <!-- Button for searching skills -->
+        <a href="/skillForm" class="btn btn-success">Update Skills</a>
+        
+         <!-- Button for adding new skills -->
+        <a href="/delskills" class="btn btn-success">Delete Skills</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
